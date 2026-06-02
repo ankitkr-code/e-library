@@ -1,0 +1,51 @@
+[
+    {
+        "id": 1,
+        "student": "Ankit Kumar",
+        "book": "Python Programming",
+        "type": "Issue",
+        "date": "2026-05-01"
+    },
+    {
+        "id": 2,
+        "student": "Jyoti Kumari",
+        "book": "Linear Algebra",
+        "type": "Issue",
+        "date": "2026-04-03"
+    },
+    {
+        "id": 3,
+        "student": "Ankit Kumar",
+        "book": "Python Programming",
+        "type": "Return",
+        "date": "2026-05-17"
+    },
+    {
+        "id": 4,
+        "student": "Jyoti Kumari",
+        "book": "Linear Algebra",
+        "type": "Return",
+        "date": "2026-05-13"
+    },
+    {
+        "id": 5,
+        "student": "Ankit Kumar",
+        "book": "Python Programming",
+        "type": "Issue",
+        "date": "2026-05-13"
+    },
+    {
+        "id": 6,
+        "student": "Anant Kumar",
+        "book": "Python Programming",
+        "type": "Issue",
+        "date": "2026-05-13"
+    },
+    {
+        "id": 7,
+        "student": "Ankit Kumar",
+        "book": "Python Programming",
+        "type": "Return",
+        "date": "2026-05-13"
+    }
+]

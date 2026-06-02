@@ -1,0 +1,26 @@
+[
+    {
+        "id": 1,
+        "name": "B.Tech in Electronics & Communication",
+        "department": "ECE",
+        "incharge": "Priya"
+    },
+    {
+        "id": 2,
+        "name": "B.Tech in Computer Science",
+        "department": "CSE",
+        "incharge": "Mohit"
+    },
+    {
+        "id": 3,
+        "name": "B.Tech in Information Technology",
+        "department": "IT",
+        "incharge": "Neha"
+    },
+    {
+        "id": 4,
+        "name": "BCA - Bachelor of Computer Applications",
+        "department": "BCA",
+        "incharge": "Sharma"
+    }
+]

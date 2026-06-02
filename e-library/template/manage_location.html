@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- Locations Table -->
+<div class="bg-white rounded-xl shadow-lg overflow-hidden mb-8">
+    <div class="bg-gradient-to-r from-orange-600 to-red-600 px-8 py-6">
+        <h2 class="text-2xl font-bold text-white">📍 Library Locations</h2>
+        <p class="text-orange-100 text-sm">Manage book storage locations</p>
+    </div>
+
+    <div class="overflow-x-auto">
+        <table class="w-full">
+            <thead>
+                <tr class="bg-gray-100 border-b-2 border-gray-200">
+                    <th class="px-6 py-4 text-left text-sm font-bold text-gray-700">ID</th>
+                    <th class="px-6 py-4 text-left text-sm font-bold text-gray-700">Location Name</th>
+                    <th class="px-6 py-4 text-left text-sm font-bold text-gray-700">Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for location in locations %}
+                <tr class="border-b border-gray-200 hover:bg-orange-50 transition-colors">
+                    <td class="px-6 py-4 text-sm text-gray-600 font-medium">#{{ location.id }}</td>
+                    <td class="px-6 py-4 text-sm text-gray-900 font-semibold">{{ location.name }}</td>
+                    <td class="px-6 py-4 text-sm text-gray-600">{{ location.description }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    {% if not locations %}
+    <div class="text-center py-12">
+        <p class="text-gray-500 text-lg">📍 No locations found.</p>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Add New Location Form -->
+<div class="bg-white rounded-xl shadow-lg p-8">
+    <h3 class="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">➕ Add New Location</h3>
+    
+    <form method="post" class="space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Location Name</label>
+                <input type="text" name="name" placeholder="e.g., Floor 1, Shelf A" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-orange-500 focus:outline-none" required />
+            </div>
+            
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Description</label>
+                <input type="text" name="description" placeholder="e.g., Near main entrance" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-orange-500 focus:outline-none" required />
+            </div>
+        </div>
+        
+        <button type="submit" class="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white font-bold py-3 px-8 rounded-lg transition transform hover:translate-y-[-2px] shadow-lg">
+            ✅ Add Location
+        </button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="bg-white rounded-xl shadow-lg overflow-hidden">
+    <div class="bg-gradient-to-r from-blue-600 to-cyan-600 px-8 py-6">
+        <h2 class="text-2xl font-bold text-white">📚 Book Inventory</h2>
+        <p class="text-blue-100 text-sm">Manage library book collection</p>
+    </div>
+
+    <div class="overflow-x-auto">
+        <table class="w-full">
+            <thead>
+                <tr class="bg-gray-100 border-b-2 border-gray-200">
+                    <th class="px-6 py-4 text-left text-sm font-bold text-gray-700">ID</th>
+                    <th class="px-6 py-4 text-left text-sm font-bold text-gray-700">Title</th>
+                    <th class="px-6 py-4 text-left text-sm font-bold text-gray-700">Author</th>
+                    <th class="px-6 py-4 text-left text-sm font-bold text-gray-700">ISBN</th>
+                    <th class="px-6 py-4 text-left text-sm font-bold text-gray-700">Location</th>
+                    <th class="px-6 py-4 text-left text-sm font-bold text-gray-700">Category</th>
+                    <th class="px-6 py-4 text-left text-sm font-bold text-gray-700">PDF</th>
+                    {% if session.get('role') == 'admin' %}<th class="px-6 py-4 text-left text-sm font-bold text-gray-700">Action</th>{% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for book in books %}
+                <tr class="border-b border-gray-200 hover:bg-blue-50 transition-colors">
+                    <td class="px-6 py-4 text-sm text-gray-600 font-medium">{{ book.id }}</td>
+                    <td class="px-6 py-4 text-sm text-gray-900 font-semibold">{{ book.title }}</td>
+                    <td class="px-6 py-4 text-sm text-gray-600">{{ book.author }}</td>
+                    <td class="px-6 py-4 text-sm text-gray-600">{{ book.isbn }}</td>
+                    <td class="px-6 py-4 text-sm">
+                        <span class="px-3 py-1 bg-orange-100 text-orange-800 rounded-full text-xs font-medium">{{ book.location }}</span>
+                    </td>
+                    <td class="px-6 py-4 text-sm">
+                        <span class="px-3 py-1 bg-cyan-100 text-cyan-800 rounded-full text-xs font-medium">{{ book.category }}</span>
+                    </td>
+                    <td class="px-6 py-4 text-sm">
+                        {% if book.pdf %}
+                        <a href="{{ url_for('static', filename=book.pdf) }}" target="_blank" class="text-cyan-600 hover:text-cyan-800 font-semibold transition">📄 PDF</a>
+                        {% else %}
+                        <span class="text-gray-400 text-xs">N/A</span>
+                        {% endif %}
+                    </td>
+                    {% if session.get('role') == 'admin' %}
+                    <td class="px-6 py-4 text-sm">
+                        <a href="{{ url_for('update_book_pdf', book_id=book.id) }}" class="bg-cyan-500 hover:bg-cyan-600 text-white px-3 py-2 rounded-lg font-medium transition text-xs">Update</a>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    {% if not books %}
+    <div class="text-center py-12">
+        <p class="text-gray-500 text-lg">📚 No books found. Add some books to get started!</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

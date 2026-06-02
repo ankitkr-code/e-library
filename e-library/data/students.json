@@ -1,0 +1,46 @@
+[
+    {
+        "id": 1,
+        "name": "Ankit Kumar",
+        "program": "CSE",
+        "email": "ankit@example.com",
+        "username": "Akki"
+    },
+    {
+        "id": 2,
+        "name": "Priya Singh",
+        "program": "IT",
+        "email": "priya@example.com",
+        "username": null
+    },
+    {
+        "id": 3,
+        "name": "Jyoti Kumari",
+        "program": "ECE",
+        "email": "jyotirana@example.com",
+        "username": "jyoti"
+    },
+    {
+        "id": 4,
+        "name": "Anil Verma",
+        "program": "BCA",
+        "email": "anil@example.com",
+        "username": null
+    },
+    {
+        "id": 5,
+        "name": "Anant Kumar",
+        "program": "CSE",
+        "email": "ankitm7250@outlook.com",
+        "registration_no": "22040440011",
+        "username": "Anant"
+    },
+    {
+        "id": 6,
+        "name": "Antu",
+        "program": "IT",
+        "email": "anantmoody03@gmail.com",
+        "registration_no": "22040440003",
+        "username": "Antu003"
+    }
+]

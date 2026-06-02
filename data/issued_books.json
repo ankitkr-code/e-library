@@ -1,0 +1,23 @@
+[
+    {
+        "id": 2,
+        "student": "Antu003",
+        "book": "Python Programming",
+        "issue_date": "2026-05-13",
+        "due_date": "2026-05-21"
+    },
+    {
+        "id": 3,
+        "student": "Antu003",
+        "book": "Linear Algebra",
+        "issue_date": "2026-05-19",
+        "due_date": "2026-05-23"
+    },
+    {
+        "id": 4,
+        "student": "jyoti",
+        "book": "Calculus Made Easy",
+        "issue_date": "2026-05-17",
+        "due_date": "2026-05-21"
+    }
+]

@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="animate-slide-up">
+    <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
+        <div class="flex items-center gap-3 mb-6">
+            <div class="w-12 h-12 bg-gradient-to-br from-purple-400 to-pink-500 rounded-lg flex items-center justify-center text-white text-xl">⚙️</div>
+            <div>
+                <h2 class="text-2xl font-bold text-gray-900 m-0">Manage Admin Users</h2>
+                <p class="text-gray-600 text-sm m-0">Assign or revoke admin privileges to users</p>
+            </div>
+        </div>
+
+        {% if users %}
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead>
+                    <tr class="border-b-2 border-purple-400">
+                        <th class="text-left py-4 px-4 font-bold text-gray-700">Username</th>
+                        <th class="text-left py-4 px-4 font-bold text-gray-700">Current Role</th>
+                        <th class="text-center py-4 px-4 font-bold text-gray-700">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for username, user_data in users.items() %}
+                    <tr class="border-b border-gray-200 table-row hover:bg-purple-50">
+                        <td class="py-4 px-4 font-medium text-gray-900">
+                            <div class="flex items-center gap-2">
+                                {% if user_data.role == 'admin' %}
+                                    <div class="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center text-white text-xs font-bold">A</div>
+                                {% else %}
+                                    <div class="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs font-bold">U</div>
+                                {% endif %}
+                                {{ username }}
+                            </div>
+                        </td>
+                        <td class="py-4 px-4">
+                            {% if user_data.role == 'admin' %}
+                                <span class="inline-block bg-gradient-to-r from-red-400 to-red-600 text-white px-4 py-1 rounded-full text-sm font-bold">Admin</span>
+                            {% else %}
+                                <span class="inline-block bg-gradient-to-r from-blue-400 to-blue-600 text-white px-4 py-1 rounded-full text-sm font-bold">User</span>
+                            {% endif %}
+                        </td>
+                        <td class="py-4 px-4 text-center">
+                            <form method="POST" style="display: inline;">
+                                <input type="hidden" name="username" value="{{ username }}">
+                                {% if user_data.role == 'admin' %}
+                                    <input type="hidden" name="role" value="user">
+                                    <button type="submit" class="bg-gradient-to-r from-yellow-400 to-yellow-600 hover:from-yellow-500 hover:to-yellow-700 text-white font-bold py-2 px-4 rounded-lg transition-all duration-300 hover:shadow-lg">
+                                        🔽 Revoke Admin
+                                    </button>
+                                {% else %}
+                                    <input type="hidden" name="role" value="admin">
+                                    <button type="submit" class="bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 text-white font-bold py-2 px-4 rounded-lg transition-all duration-300 hover:shadow-lg">
+                                        🔼 Make Admin
+                                    </button>
+                                {% endif %}
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="text-center py-12 bg-gray-50 rounded-lg">
+            <p class="text-gray-600 font-medium">No users found in the system</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Info Box -->
+    <div class="bg-gradient-to-r from-blue-50 to-purple-50 border-l-4 border-blue-500 rounded-lg p-6">
+        <h3 class="text-lg font-bold text-gray-900 mb-3">💡 How It Works</h3>
+        <ul class="text-gray-700 space-y-2">
+            <li>✅ <strong>Admin Users:</strong> Have full access to all admin features (notices, assignments, class notes, user management)</li>
+            <li>✅ <strong>Regular Users:</strong> Can only view and access student features</li>
+            <li>✅ <strong>Quick Toggle:</strong> Use the action buttons to instantly promote or demote any user</li>
+            <li>⚠️ <strong>Note:</strong> At least one admin should exist in the system</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

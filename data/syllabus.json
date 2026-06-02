@@ -1,0 +1,26 @@
+[
+    {
+        "id": 1,
+        "department": "CSE",
+        "semester": "1",
+        "file": "syllabus/CSE_Sem1.pdf"
+    },
+    {
+        "id": 2,
+        "department": "IT",
+        "semester": "1",
+        "file": "syllabus/IT_Sem1.pdf"
+    },
+    {
+        "id": 3,
+        "department": "ECE",
+        "semester": "1",
+        "file": "syllabus/ECE_Sem1.pdf"
+    },
+    {
+        "id": 4,
+        "department": "BCA",
+        "semester": "1",
+        "file": "syllabus/BCA_Sem1.pdf"
+    }
+]

@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="bg-white rounded-xl shadow-lg overflow-hidden">
+    <div class="bg-gradient-to-r from-teal-600 to-cyan-600 px-8 py-6">
+        <h2 class="text-2xl font-bold text-white">📊 Transaction Report</h2>
+        <p class="text-teal-100 text-sm">View all book issue and return history</p>
+    </div>
+
+    <div class="overflow-x-auto">
+        <table class="w-full">
+            <thead>
+                <tr class="bg-gray-100 border-b-2 border-gray-200">
+                    <th class="px-6 py-4 text-left text-sm font-bold text-gray-700">ID</th>
+                    <th class="px-6 py-4 text-left text-sm font-bold text-gray-700">Student</th>
+                    <th class="px-6 py-4 text-left text-sm font-bold text-gray-700">Book</th>
+                    <th class="px-6 py-4 text-left text-sm font-bold text-gray-700">Type</th>
+                    <th class="px-6 py-4 text-left text-sm font-bold text-gray-700">Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for transaction in transactions %}
+                <tr class="border-b border-gray-200 hover:bg-teal-50 transition-colors">
+                    <td class="px-6 py-4 text-sm text-gray-600 font-medium">#{{ transaction.id }}</td>
+                    <td class="px-6 py-4 text-sm text-gray-900 font-semibold">{{ transaction.student }}</td>
+                    <td class="px-6 py-4 text-sm text-gray-600">{{ transaction.book }}</td>
+                    <td class="px-6 py-4 text-sm">
+                        {% if transaction.type == 'Issue' %}
+                            <span class="px-3 py-1 bg-orange-100 text-orange-800 rounded-full text-xs font-medium">📤 Issue</span>
+                        {% else %}
+                            <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">📥 Return</span>
+                        {% endif %}
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-600">{{ transaction.date }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    {% if not transactions %}
+    <div class="text-center py-12">
+        <p class="text-gray-500 text-lg">📊 No transactions recorded yet.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

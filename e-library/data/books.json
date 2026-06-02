@@ -1,0 +1,74 @@
+[
+    {
+        "id": 1,
+        "title": "Python Programming",
+        "author": "A. Author",
+        "isbn": "978-0001",
+        "location": "Shelf A1",
+        "category": "Coding",
+        "pdf": "uploads/python_programming.pdf"
+    },
+    {
+        "id": 2,
+        "title": "Flask Web Development",
+        "author": "B. Writer",
+        "isbn": "978-0002",
+        "location": "Shelf B2",
+        "category": "Coding",
+        "pdf": "uploads/Flask_Web_Development_Developing.pdf"
+    },
+    {
+        "id": 3,
+        "title": "Learning Python",
+        "author": "M. Lutz",
+        "isbn": "978-0003",
+        "location": "Shelf C1",
+        "category": "Coding",
+        "pdf": "uploads/learning_python.pdf"
+    },
+    {
+        "id": 4,
+        "title": "Data Structures in Python",
+        "author": "A. Expert",
+        "isbn": "978-0004",
+        "location": "Shelf C2",
+        "category": "Coding",
+        "pdf": "uploads/DSA_in_python.pdf"
+    },
+    {
+        "id": 5,
+        "title": "Calculus Made Easy",
+        "author": "S. Author",
+        "isbn": "978-0005",
+        "location": "Shelf D1",
+        "category": "Mathematics",
+        "pdf": null
+    },
+    {
+        "id": 6,
+        "title": "Linear Algebra",
+        "author": "T. Scholar",
+        "isbn": "978-0006",
+        "location": "Shelf D2",
+        "category": "Mathematics",
+        "pdf": null
+    },
+    {
+        "id": 7,
+        "title": "Discrete Mathematics",
+        "author": "P. Math",
+        "isbn": "978-0007",
+        "location": "Shelf D3",
+        "category": "Mathematics",
+        "pdf": null
+    },
+    {
+        "id": 8,
+        "title": "DSA in Java",
+        "author": "C.Author",
+        "isbn": "",
+        "location": "Shelf A2",
+        "category": "Coding",
+        "pdf": "uploads/DSA_in_java.pdf"
+    }
+]

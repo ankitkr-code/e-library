@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>e-Library Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Smooth transitions */
+        * {
+            transition: all 0.3s ease;
+        }
+
+        /* Animations */
+        @keyframes slideInLeft {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(6, 182, 212, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(6, 182, 212, 0.5); }
+        }
+
+        .animate-slide-in {
+            animation: slideInLeft 0.5s ease forwards;
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .animate-slide-up {
+            animation: slideUp 0.5s ease forwards;
+        }
+
+        .hover-lift {
+            position: relative;
+        }
+
+        .hover-lift:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15) !important;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+            box-shadow: 2px 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar a {
+            position: relative;
+            color: #e0e7ff;
+        }
+
+        .sidebar a::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 0;
+            height: 2px;
+            background: #06b6d4;
+            transition: width 0.3s ease;
+        }
+
+        .sidebar a:hover {
+            background: rgba(6, 182, 212, 0.2);
+            color: #06b6d4;
+            border-radius: 0.5rem;
+        }
+
+        .sidebar a:hover::before {
+            width: 100%;
+        }
+
+        /* Cards */
+        .card {
+            background: #ffffff;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.05), transparent);
+            animation: shimmer 4s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        /* Buttons */
+        .btn-primary {
+            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+            color: white;
+            font-weight: 600;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #0891b2 0%, #06b6d4 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(6, 182, 212, 0.3);
+        }
+
+        /* Alerts */
+        .alert {
+            border-radius: 0.75rem;
+            animation: slideUp 0.4s ease;
+        }
+
+        .alert-success {
+            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+            color: #166534;
+            border-left: 4px solid #22c55e;
+        }
+
+        .alert-danger {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            color: #991b1b;
+            border-left: 4px solid #ef4444;
+        }
+
+        .alert-warning {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            color: #92400e;
+            border-left: 4px solid #eab308;
+        }
+
+        .alert-info {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            color: #1e40af;
+            border-left: 4px solid #3b82f6;
+        }
+
+        /* Forms */
+        .form-group input, 
+        .form-group select, 
+        .form-group textarea {
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus, 
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #06b6d4;
+            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+            outline: none;
+        }
+
+        /* Chatbot */
+        .chatbot {
+            background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%);
+            border: 2px solid #e0f2fe;
+            border-radius: 1rem;
+            animation: slideUp 0.6s ease;
+        }
+
+        .chatbot-form input {
+            border: 2px solid #cbd5e1;
+            border-radius: 0.75rem;
+        }
+
+        .chatbot-form input:focus {
+            border-color: #06b6d4;
+            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+        }
+
+        .chatbot-form button {
+            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+            border-radius: 0.75rem;
+            font-weight: 600;
+        }
+
+        .chatbot-form button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(6, 182, 212, 0.3);
+        }
+
+        .recommendation-item {
+            background: white;
+            border-left: 3px solid #06b6d4;
+            transition: all 0.3s ease;
+        }
+
+        .recommendation-item:hover {
+            transform: translateX(4px);
+            box-shadow: 0 5px 15px rgba(6, 182, 212, 0.2);
+        }
+
+        .history-tag {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            color: #1e40af;
+            border: 1px solid #3b82f6;
+            border-radius: 999px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .history-tag:hover {
+            background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        /* Logo */
+        .logo-admin, .logo-user {
+            width: 40px;
+            height: 40px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-weight: 700;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .logo-admin {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        }
+
+        .logo-user {
+            background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+        }
+
+        .table-row:hover {
+            background: #f0f9ff;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 via-blue-50 to-cyan-50">
+<div class="flex min-h-screen">
+    <!-- Sidebar -->
+    <div class="sidebar w-64 min-h-screen p-6 animate-slide-in">
+        <div class="mb-8">
+            <div class="flex items-center gap-3 mb-2">
+                <div class="w-12 h-12 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-lg flex items-center justify-center text-white font-bold text-xl shadow-lg">
+                    📚
+                </div>
+                <div>
+                    <h2 class="text-xl font-bold text-white m-0">e-Library</h2>
+                    <p class="text-xs text-cyan-200 m-0">LMS System</p>
+                </div>
+            </div>
+        </div>
+
+        <nav class="space-y-2">
+            <a href="{{ url_for('dashboard') }}" class="block px-4 py-3 rounded-lg font-medium">📊 Dashboard</a>
+            {% if session.get('role') == 'admin' %}
+                <div class="text-cyan-200 text-xs font-bold mt-6 mb-3 px-4">ADMIN PANEL</div>
+                <a href="{{ url_for('student_master') }}" class="block px-4 py-3 rounded-lg font-medium">👥 Student's Master</a>
+                <a href="{{ url_for('program_master') }}" class="block px-4 py-3 rounded-lg font-medium">🎓 Program Master</a>
+                <a href="{{ url_for('book_master') }}" class="block px-4 py-3 rounded-lg font-medium">📖 Book Master</a>
+                <a href="{{ url_for('manage_location') }}" class="block px-4 py-3 rounded-lg font-medium">📍 Manage Location</a>
+                <a href="{{ url_for('manage_library_card') }}" class="block px-4 py-3 rounded-lg font-medium">🎫 Library Cards</a>
+                <a href="{{ url_for('issue_book') }}" class="block px-4 py-3 rounded-lg font-medium">📤 Issue Book</a>
+                <a href="{{ url_for('return_book') }}" class="block px-4 py-3 rounded-lg font-medium">📥 Return Book</a>
+                <a href="{{ url_for('transaction_report') }}" class="block px-4 py-3 rounded-lg font-medium">📊 Transactions</a>
+                <a href="{{ url_for('upload_book') }}" class="block px-4 py-3 rounded-lg font-medium">⬆️ Upload Book</a>
+                <a href="{{ url_for('admin_management') }}" class="block px-4 py-3 rounded-lg font-medium">⚙️ Admin Management</a>
+                <a href="{{ url_for('approve_registrations_page') }}" class="block px-4 py-3 rounded-lg font-medium">✓ Approve Students</a>
+                <div class="text-cyan-200 text-xs font-bold mt-6 mb-3 px-4">ACADEMIC MANAGEMENT</div>
+                <a href="{{ url_for('notices') }}" class="block px-4 py-3 rounded-lg font-medium">📢 Notices</a>
+                <a href="{{ url_for('class_notes_view') }}" class="block px-4 py-3 rounded-lg font-medium">📚 Class Notes</a>
+                <a href="{{ url_for('academic_tasks_view') }}" class="block px-4 py-3 rounded-lg font-medium">📋 Assignments & Quiz</a>
+            {% endif %}
+            <div class="text-cyan-200 text-xs font-bold mt-6 mb-3 px-4">USER</div>
+            <a href="{{ url_for('book_master') }}" class="block px-4 py-3 rounded-lg font-medium">📚 Books</a>
+            <a href="{{ url_for('syllabus') }}" class="block px-4 py-3 rounded-lg font-medium">📋 Syllabus</a>
+            <a href="{{ url_for('notices') }}" class="block px-4 py-3 rounded-lg font-medium">📢 Notices</a>
+            <a href="{{ url_for('class_notes_view') }}" class="block px-4 py-3 rounded-lg font-medium">📚 Class Notes</a>
+            <a href="{{ url_for('academic_tasks_view') }}" class="block px-4 py-3 rounded-lg font-medium">📋 Assignments & Quiz</a>
+            <a href="{{ url_for('change_password') }}" class="block px-4 py-3 rounded-lg font-medium">🔐 Change Password</a>
+            <div class="border-t border-blue-500 mt-6 pt-4">
+                <a href="{{ url_for('logout') }}" class="block px-4 py-3 rounded-lg font-medium text-red-300 hover:bg-red-500/20">🚪 Logout</a>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-1 overflow-auto">
+        <div class="p-8">
+            <!-- Top Bar -->
+            <div class="flex justify-between items-start mb-8 animate-fade-in">
+                <div>
+                    <h1 class="text-4xl font-bold text-gray-900 mb-2">{{ title }}</h1>
+                    <p class="text-gray-600">{{ subtitle or '' }}</p>
+                </div>
+                <div class="text-right bg-white rounded-lg p-4 shadow-md">
+                    <div class="flex items-center gap-3">
+                        {% if session.get('role') == 'admin' %}
+                            <div class="logo-admin">A</div>
+                        {% else %}
+                            <div class="logo-user">U</div>
+                        {% endif %}
+                        <div>
+                            <p class="font-bold text-gray-900 m-0">{{ session.get('username', 'User') }}</p>
+                            <p class="text-xs text-gray-500 m-0">{{ session.get('role', '').upper() }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Alerts -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                {% for category, message in messages %}
+                  <div class="alert alert-{{ category }} px-6 py-4 rounded-lg mb-4 font-medium">{{ message }}</div>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
+
+            <!-- Content Block -->
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+</div>
+</body>
+</html>

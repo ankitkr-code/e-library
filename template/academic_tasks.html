@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- Academic Tasks Display -->
+<div class="bg-white rounded-xl shadow-lg overflow-hidden mb-8">
+    <div class="bg-gradient-to-r from-orange-600 to-red-600 px-8 py-6">
+        <h2 class="text-2xl font-bold text-white">📋 Assignments & Quizzes</h2>
+        <p class="text-orange-100 text-sm">Course assessments and academic tasks</p>
+    </div>
+
+    <!-- Filters -->
+    <div class="px-8 py-6 bg-gray-50 border-b border-gray-200">
+        <div class="mb-4">
+            <p class="text-sm font-semibold text-gray-700 mb-2">By Department:</p>
+            <div class="flex flex-wrap gap-2">
+                <a href="{{ url_for('academic_tasks_view') }}" class="px-4 py-2 bg-white border-2 border-gray-300 rounded-lg text-sm font-semibold text-gray-700 hover:border-orange-500 hover:text-orange-600 transition">All</a>
+                {% for dept in departments %}
+                <a href="{{ url_for('academic_tasks_view', department=dept) }}" class="{% if selected_department == dept %}bg-orange-500 text-white border-orange-500{% else %}bg-white text-gray-700 border-gray-300 hover:border-orange-500 hover:text-orange-600{% endif %} px-4 py-2 border-2 rounded-lg text-sm font-semibold transition">{{ dept }}</a>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div>
+            <p class="text-sm font-semibold text-gray-700 mb-2">By Type:</p>
+            <div class="flex flex-wrap gap-2">
+                <a href="{% if selected_department %}{{ url_for('academic_tasks_view', department=selected_department) }}{% else %}{{ url_for('academic_tasks_view') }}{% endif %}" class="{% if not selected_type %}bg-orange-500 text-white border-orange-500{% else %}bg-white text-gray-700 border-gray-300 hover:border-orange-500{% endif %} px-4 py-2 border-2 rounded-lg text-sm font-semibold transition">All</a>
+                <a href="{% if selected_department %}{{ url_for('academic_tasks_view', department=selected_department, type='assignment') }}{% else %}{{ url_for('academic_tasks_view', type='assignment') }}{% endif %}" class="{% if selected_type == 'assignment' %}bg-orange-500 text-white border-orange-500{% else %}bg-white text-gray-700 border-gray-300 hover:border-orange-500{% endif %} px-4 py-2 border-2 rounded-lg text-sm font-semibold transition">📝 Assignments</a>
+                <a href="{% if selected_department %}{{ url_for('academic_tasks_view', department=selected_department, type='quiz') }}{% else %}{{ url_for('academic_tasks_view', type='quiz') }}{% endif %}" class="{% if selected_type == 'quiz' %}bg-orange-500 text-white border-orange-500{% else %}bg-white text-gray-700 border-gray-300 hover:border-orange-500{% endif %} px-4 py-2 border-2 rounded-lg text-sm font-semibold transition">❓ Quizzes</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tasks List -->
+    <div class="p-8">
+        {% if academic_tasks %}
+        <div class="space-y-4">
+            {% for task in academic_tasks %}
+            <div class="bg-gradient-to-r {% if task.task_type == 'assignment' %}from-orange-50 to-yellow-50 border-l-4 border-orange-500{% else %}from-red-50 to-pink-50 border-l-4 border-red-500{% endif %} rounded-lg p-6 hover:shadow-lg transition">
+                <div class="flex justify-between items-start mb-3">
+                    <div>
+                        <div class="flex items-center gap-3 mb-2">
+                            <span class="{% if task.task_type == 'assignment' %}bg-orange-100 text-orange-800{% else %}bg-red-100 text-red-800{% endif %} px-3 py-1 rounded-full text-xs font-semibold">
+                                {% if task.task_type == 'assignment' %}📝 Assignment{% else %}❓ Quiz{% endif %}
+                            </span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900">{{ task.title }}</h3>
+                        <p class="text-sm text-gray-600 mt-1">Department: <span class="font-semibold {% if task.task_type == 'assignment' %}text-orange-600{% else %}text-red-600{% endif %}">{{ task.department }}</span></p>
+                    </div>
+                    {% if user_role == 'admin' %}
+                    <div class="flex gap-2">
+                        <a href="{{ url_for('edit_academic_task', task_id=task.id) }}" class="{% if task.task_type == 'assignment' %}bg-orange-500 hover:bg-orange-600{% else %}bg-red-500 hover:bg-red-600{% endif %} text-white px-3 py-2 rounded-lg font-semibold transition text-sm">✏️ Edit</a>
+                        <form method="post" action="{{ url_for('delete_academic_task', task_id=task.id) }}" style="display:inline;" onsubmit="return confirm('Delete this task?');">
+                            <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-lg font-semibold transition text-sm">🗑️ Delete</button>
+                        </form>
+                    </div>
+                    {% endif %}
+                </div>
+                <p class="text-gray-700 mb-3">{{ task.description }}</p>
+                <div class="flex justify-between items-center text-sm text-gray-600 bg-white bg-opacity-50 px-4 py-2 rounded-lg mb-3">
+                    <span>Created by: <strong>{{ task.created_by }}</strong></span>
+                    <span class="font-semibold">📅 Due: {{ task.due_date }}</span>
+                </div>
+                {% if user_role == 'admin' %}
+                <div class="flex gap-2">
+                    <a href="{{ url_for('manage_questions', task_id=task.id) }}" class="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-lg font-semibold transition text-sm">❓ Manage Questions</a>
+                    <a href="{{ url_for('edit_academic_task', task_id=task.id) }}" class="{% if task.task_type == 'assignment' %}bg-orange-500 hover:bg-orange-600{% else %}bg-red-500 hover:bg-red-600{% endif %} text-white px-3 py-2 rounded-lg font-semibold transition text-sm">✏️ Edit</a>
+                    <form method="post" action="{{ url_for('delete_academic_task', task_id=task.id) }}" style="display:inline;" onsubmit="return confirm('Delete this task?');">
+                        <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-lg font-semibold transition text-sm">🗑️ Delete</button>
+                    </form>
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center py-12">
+            <p class="text-gray-500 text-lg">📋 No tasks found.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Create New Task (Admin Only) -->
+{% if user_role == 'admin' %}
+<div class="bg-white rounded-xl shadow-lg p-8">
+    <h3 class="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">➕ Create New Task</h3>
+    
+    <form method="post" class="space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Task Type</label>
+                <select name="task_type" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-orange-500 focus:outline-none" required>
+                    <option value="">Select Type</option>
+                    <option value="assignment">📝 Assignment</option>
+                    <option value="quiz">❓ Quiz</option>
+                </select>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Department</label>
+                <select name="department" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-orange-500 focus:outline-none" required>
+                    <option value="">Select Department</option>
+                    {% for dept in departments %}
+                    <option value="{{ dept }}">{{ dept }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        
+        <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Title</label>
+            <input type="text" name="title" placeholder="e.g., Chapter 5 Assignment" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-orange-500 focus:outline-none" required>
+        </div>
+        
+        <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Description</label>
+            <textarea name="description" rows="6" placeholder="Enter task details and instructions..." class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-orange-500 focus:outline-none resize-none" required></textarea>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Due Date</label>
+                <input type="date" name="due_date" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-orange-500 focus:outline-none" required>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Created Date</label>
+                <input type="date" name="created_date" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-orange-500 focus:outline-none" required>
+            </div>
+        </div>
+        
+        <button type="submit" class="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white font-bold py-3 px-8 rounded-lg transition transform hover:translate-y-[-2px] shadow-lg">
+            ✅ Create Task
+        </button>
+    </form>
+</div>
+{% endif %}
+{% endblock %}

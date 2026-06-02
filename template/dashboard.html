@@ -1,0 +1,837 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    /* Dashboard Animations */
+    @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+    }
+
+    @keyframes slideInUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes shelfScan {
+        0% { transform: translateX(-35%); opacity: 0.35; }
+        50% { opacity: 0.95; }
+        100% { transform: translateX(115%); opacity: 0.35; }
+    }
+
+    @keyframes softRise {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-6px); }
+    }
+
+    @keyframes pulse-glow {
+        0%, 100% { box-shadow: 0 0 20px rgba(245, 158, 11, 0.3); }
+        50% { box-shadow: 0 0 40px rgba(245, 158, 11, 0.6); }
+    }
+
+    .stat-card {
+        animation: slideInUp 0.6s ease forwards;
+        opacity: 0;
+    }
+
+    .stat-card:nth-child(1) { animation-delay: 0.1s; }
+    .stat-card:nth-child(2) { animation-delay: 0.2s; }
+    .stat-card:nth-child(3) { animation-delay: 0.3s; }
+    .stat-card:nth-child(4) { animation-delay: 0.4s; }
+    .stat-card:nth-child(5) { animation-delay: 0.5s; }
+    .stat-card:nth-child(6) { animation-delay: 0.6s; }
+    .stat-card:nth-child(7) { animation-delay: 0.7s; }
+
+    .book-icon {
+        animation: float 3s ease-in-out infinite;
+    }
+
+    .stat-value {
+        font-size: 2.5rem;
+        font-weight: 800;
+    }
+
+    .quote-box {
+        animation: slideInUp 0.8s ease forwards;
+        opacity: 0;
+        animation-delay: 0.8s;
+    }
+
+    .book-carousel {
+        animation: slideInUp 1s ease forwards;
+        opacity: 0;
+        animation-delay: 1s;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15) !important;
+    }
+
+    .quote-text {
+        font-style: italic;
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: #1a365d;
+        border-left: 4px solid #f59e0b;
+        padding-left: 20px;
+    }
+
+    .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    .feature-item {
+        background: linear-gradient(135deg, #f59e0b15 0%, #d9770615 100%);
+        padding: 15px;
+        border-radius: 10px;
+        text-align: center;
+        border: 1px solid #f59e0b30;
+        transition: all 0.3s ease;
+    }
+
+    .feature-item:hover {
+        background: linear-gradient(135deg, #f59e0b25 0%, #d9770625 100%);
+        border-color: #f59e0b;
+        transform: translateY(-5px);
+    }
+
+    .feature-item .emoji {
+        font-size: 2rem;
+        margin-bottom: 10px;
+    }
+
+    .glass-panel {
+        background: rgba(227, 127, 127, 0.62);
+        border: 1px solid rgba(100, 201, 212, 0.78);
+        box-shadow: 0 18px 45px rgba(8, 145, 178, 0.12);
+        backdrop-filter: blur(16px);
+    }
+
+    .hero-glass {
+        background:
+            linear-gradient(135deg, rgba(255, 255, 255, 0.74), rgba(146, 200, 237, 0.54)),
+            linear-gradient(135deg, rgba(242, 205, 143, 0.14), rgba(6, 182, 212, 0.1));
+        border: 1px solid rgba(6, 182, 212, 0.18);
+    }
+
+    .highlight-panel {
+        background: linear-gradient(135deg, rgba(8, 145, 178, 0.92), rgba(245, 158, 11, 0.9));
+    }
+
+    .library-motion {
+        position: relative;
+        overflow: hidden;
+        background:
+            linear-gradient(135deg, rgba(255, 255, 255, 0.72), rgba(70, 129, 168, 0.5)),
+            repeating-linear-gradient(90deg, rgba(8, 145, 178, 0.08) 0 1px, transparent 1px 54px);
+    }
+
+    .library-motion::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.16), transparent);
+        width: 42%;
+        animation: shelfScan 7s ease-in-out infinite;
+    }
+
+    .motion-content {
+        position: relative;
+        z-index: 1;
+    }
+
+    .shelf-row {
+        display: grid;
+        grid-template-columns: repeat(9, minmax(14px, 1fr));
+        gap: 8px;
+        align-items: end;
+        height: 96px;
+    }
+
+    .book-bar {
+        border-radius: 6px 6px 3px 3px;
+        box-shadow: inset 0 -10px 0 rgba(255, 255, 255, 0.18);
+        animation: softRise 4s ease-in-out infinite;
+    }
+
+    .book-bar:nth-child(2n) { animation-delay: 0.4s; }
+    .book-bar:nth-child(3n) { animation-delay: 0.8s; }
+
+    .action-panel {
+        background: linear-gradient(135deg, rgba(8, 145, 178, 0.9), rgba(30, 64, 175, 0.82));
+    }
+
+    .entry-shell {
+        min-height: calc(100vh - 168px);
+        position: relative;
+        overflow: hidden;
+        border-radius: 1.75rem;
+        background:
+            radial-gradient(circle at 16% 18%, rgba(245, 158, 11, 0.22), transparent 27%),
+            radial-gradient(circle at 80% 20%, rgba(6, 182, 212, 0.22), transparent 31%),
+            linear-gradient(135deg, rgba(248,250,252,0.92), rgba(224,242,254,0.82));
+        border: 1px solid rgba(255, 255, 255, 0.78);
+        box-shadow: 0 24px 70px rgba(15, 23, 42, 0.12);
+        isolation: isolate;
+    }
+
+    .entry-shell::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image:
+            linear-gradient(rgba(8,145,178,0.06) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(8,145,178,0.06) 1px, transparent 1px);
+        background-size: 52px 52px;
+        mask-image: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent 86%);
+        z-index: -2;
+    }
+
+    .entry-shell::after {
+        content: '';
+        position: absolute;
+        width: 42rem;
+        height: 42rem;
+        right: -18rem;
+        bottom: -20rem;
+        background: radial-gradient(circle, rgba(245,158,11,0.18), transparent 66%);
+        z-index: -1;
+    }
+
+    .entry-card {
+        background: rgba(255, 255, 255, 0.84);
+        border: 1px solid rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        box-shadow: 0 24px 60px rgba(8, 145, 178, 0.22), inset 0 1px 0 rgba(255,255,255,0.9);
+    }
+
+    .entry-mark {
+        width: 4.75rem;
+        height: 4.75rem;
+        background: linear-gradient(135deg, #0891b2, #f59e0b);
+        box-shadow: 0 18px 36px rgba(8, 145, 178, 0.24);
+    }
+
+    .mini-stat {
+        background: rgba(255, 255, 255, 0.82);
+        border: 1px solid rgba(8, 145, 178, 0.12);
+        box-shadow: 0 12px 28px rgba(15,23,42,0.06);
+    }
+
+    .library-stage {
+        position: relative;
+        min-height: 600px;
+    }
+
+    .open-book {
+        position: absolute;
+        left: 6%;
+        bottom: 42px;
+        width: min(420px, 86%);
+        height: 210px;
+        perspective: 900px;
+    }
+
+    .book-page {
+        position: absolute;
+        top: 0;
+        width: 50%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(255,255,255,0.96), rgba(219,234,254,0.9));
+        border: 1px solid rgba(8,145,178,0.14);
+        box-shadow: 0 22px 44px rgba(15,23,42,0.12);
+    }
+
+    .book-page.left {
+        left: 0;
+        border-radius: 18px 8px 8px 18px;
+        transform: rotateY(16deg);
+        transform-origin: right center;
+    }
+
+    .book-page.right {
+        right: 0;
+        border-radius: 8px 18px 18px 8px;
+        transform: rotateY(-16deg);
+        transform-origin: left center;
+    }
+
+    .book-line {
+        height: 8px;
+        border-radius: 999px;
+        background: rgba(8,145,178,0.15);
+        margin: 22px 28px;
+    }
+
+    .book-line.short { width: 48%; }
+    .book-line.mid { width: 66%; }
+
+    .book-spine {
+        position: absolute;
+        left: 48%;
+        top: 8px;
+        width: 4%;
+        height: 194px;
+        border-radius: 999px;
+        background: linear-gradient(#0891b2, #f59e0b);
+        box-shadow: 0 0 32px rgba(8,145,178,0.32);
+    }
+
+    .page-glow {
+        position: absolute;
+        left: 8%;
+        bottom: 126px;
+        width: 350px;
+        height: 4px;
+        background: linear-gradient(90deg, transparent, rgba(6,182,212,0.9), transparent);
+        animation: shelfScan 4.8s ease-in-out infinite;
+    }
+
+    .book-stack {
+        position: absolute;
+        right: 6%;
+        bottom: 50px;
+        width: 210px;
+        height: 240px;
+    }
+
+    .stack-book {
+        position: absolute;
+        right: 0;
+        height: 34px;
+        border-radius: 8px;
+        box-shadow: 0 14px 28px rgba(15,23,42,0.13);
+        animation: softRise 4.8s ease-in-out infinite;
+    }
+
+    .stack-book:nth-child(1) { bottom: 0; width: 188px; background: #0891b2; }
+    .stack-book:nth-child(2) { bottom: 42px; width: 164px; background: #f59e0b; animation-delay: 0.4s; }
+    .stack-book:nth-child(3) { bottom: 84px; width: 198px; background: #2563eb; animation-delay: 0.8s; }
+    .stack-book:nth-child(4) { bottom: 126px; width: 148px; background: #14b8a6; animation-delay: 1.2s; }
+
+    .student-card {
+        position: absolute;
+        top: 100px;
+        right: 7%;
+        width: 210px;
+        padding: 16px;
+        border-radius: 18px;
+        background: rgba(255,255,255,0.86);
+        border: 1px solid rgba(8,145,178,0.12);
+        backdrop-filter: blur(14px);
+        box-shadow: 0 18px 40px rgba(8,145,178,0.16);
+        animation: float 5s ease-in-out infinite;
+    }
+
+    .student-card.second {
+        top: 210px;
+        right: 24%;
+        width: 180px;
+        animation-delay: 1.2s;
+    }
+
+    .student-avatar {
+        width: 42px;
+        height: 42px;
+        border-radius: 999px;
+        background: linear-gradient(135deg, #0891b2, #2563eb);
+    }
+
+    .entry-chip {
+        background: rgba(255,255,255,0.86);
+        border: 1px solid rgba(8,145,178,0.1);
+        backdrop-filter: blur(12px);
+        box-shadow: 0 10px 22px rgba(15,23,42,0.05);
+    }
+
+    .entry-login-panel {
+        position: absolute;
+        z-index: 2;
+        top: 92px;
+        left: 42px;
+        width: min(360px, calc(100% - 84px));
+        background: rgba(255,255,255,0.9);
+        border: 1px solid rgba(8,145,178,0.14);
+        box-shadow: 0 22px 46px rgba(15,23,42,0.12);
+        backdrop-filter: blur(18px);
+    }
+
+    .dashboard-search {
+        background: transparent;
+    }
+
+    .search-result-card {
+        border-left: 4px solid #06b6d4;
+    }
+</style>
+
+{% if role == 'guest' %}
+<section class="entry-shell p-6 md:p-10">
+    <div class="grid grid-cols-1 xl:grid-cols-12 gap-8 min-h-[inherit] items-stretch">
+        <div class="entry-card rounded-2xl p-8 md:p-10 xl:col-span-5 flex flex-col justify-center">
+            <div>
+                <div class="entry-mark rounded-2xl flex items-center justify-center text-4xl mb-7">📚</div>
+                <p class="text-cyan-700 text-sm font-bold uppercase tracking-wide mb-3">Library Access Portal</p>
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 leading-tight mb-5">DEC Smart Scholar Hub</h2>
+                <p class="text-lg text-gray-600 leading-relaxed">
+                    A polished digital doorway for college books, syllabus updates, academic tasks, and student learning resources.
+                </p>
+                <div class="grid grid-cols-3 gap-3 mt-8">
+                    <div class="mini-stat rounded-xl p-4">
+                        <p class="text-2xl font-bold text-cyan-700">{{ books }}</p>
+                        <p class="text-xs text-gray-500 font-semibold uppercase tracking-wide">Books</p>
+                    </div>
+                    <div class="mini-stat rounded-xl p-4">
+                        <p class="text-2xl font-bold text-blue-700">{{ students }}</p>
+                        <p class="text-xs text-gray-500 font-semibold uppercase tracking-wide">Students</p>
+                    </div>
+                    <div class="mini-stat rounded-xl p-4">
+                        <p class="text-2xl font-bold text-amber-700">2026</p>
+                        <p class="text-xs text-gray-500 font-semibold uppercase tracking-wide">Since</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="entry-card rounded-2xl p-8 md:p-10 xl:col-span-7 library-stage">
+            <div class="flex flex-wrap gap-3 relative z-10">
+                <span class="entry-chip rounded-full px-4 py-2 text-sm font-semibold text-cyan-800">Digital Books</span>
+                <span class="entry-chip rounded-full px-4 py-2 text-sm font-semibold text-blue-800">Student Portal</span>
+                <span class="entry-chip rounded-full px-4 py-2 text-sm font-semibold text-amber-800">Syllabus Access</span>
+                <span class="entry-chip rounded-full px-4 py-2 text-sm font-semibold text-teal-800">Secure Login</span>
+            </div>
+
+            <div class="entry-login-panel rounded-2xl p-6">
+                <h3 class="text-2xl font-bold text-gray-900 mb-2">Enter your library</h3>
+                <p class="text-sm text-gray-500 mb-5">Sign in to continue, or create a student account for access.</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <a href="{{ url_for('login') }}" class="bg-cyan-600 hover:bg-cyan-700 text-white text-center font-bold py-3 px-6 rounded-lg shadow-md">
+                        Sign In
+                    </a>
+                    <a href="{{ url_for('register') }}" class="bg-white hover:bg-cyan-50 text-cyan-700 text-center font-bold py-3 px-6 rounded-lg border border-cyan-100">
+                        Create Account
+                    </a>
+                </div>
+            </div>
+
+            <div class="student-card">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="student-avatar"></div>
+                    <div>
+                        <p class="text-sm font-bold text-gray-900">Student Access</p>
+                        <p class="text-xs text-gray-500">Verified profile</p>
+                    </div>
+                </div>
+                <div class="h-2 bg-cyan-100 rounded-full mb-2"><div class="h-2 w-3/4 bg-cyan-500 rounded-full"></div></div>
+                <div class="h-2 bg-blue-100 rounded-full"><div class="h-2 w-1/2 bg-blue-500 rounded-full"></div></div>
+            </div>
+
+            <div class="student-card second">
+                <p class="text-sm font-bold text-gray-900 mb-2">Reading Mode</p>
+                <div class="h-2 bg-amber-100 rounded-full mb-2"><div class="h-2 w-4/5 bg-amber-500 rounded-full"></div></div>
+                <div class="h-2 bg-teal-100 rounded-full"><div class="h-2 w-2/3 bg-teal-500 rounded-full"></div></div>
+            </div>
+
+            <div class="open-book">
+                <div class="book-page left">
+                    <div class="book-line mid"></div>
+                    <div class="book-line"></div>
+                    <div class="book-line short"></div>
+                    <div class="book-line mid"></div>
+                </div>
+                <div class="book-page right">
+                    <div class="book-line short"></div>
+                    <div class="book-line mid"></div>
+                    <div class="book-line"></div>
+                    <div class="book-line short"></div>
+                </div>
+                <div class="book-spine"></div>
+            </div>
+            <div class="page-glow"></div>
+
+            <div class="book-stack">
+                <div class="stack-book"></div>
+                <div class="stack-book"></div>
+                <div class="stack-book"></div>
+                <div class="stack-book"></div>
+            </div>
+        </div>
+    </div>
+</section>
+{% else %}
+
+<!-- Welcome Section -->
+<div class="mb-12">
+    <div class="hero-glass rounded-2xl p-8 mb-8">
+        <div class="flex items-center justify-between">
+            <div>
+                <h2 class="text-4xl font-bold text-gray-900 mb-2">Welcome to DEC Smart Scholar Hub 👋</h2>
+                <p class="text-lg text-gray-600">Your gateway to knowledge and academic excellence</p>
+            </div>
+            <div class="text-6xl book-icon">📚</div>
+        </div>
+
+        {% if role != 'guest' %}
+        <div class="dashboard-search mt-6">
+            <div class="flex flex-col lg:flex-row lg:items-center gap-4">
+                <div class="flex-1">
+                    <label for="chat-query" class="block text-sm font-bold text-cyan-700 uppercase tracking-wide mb-2">Search Library</label>
+                    <input id="chat-query" type="text" placeholder="Search books, programs, notices, syllabus, class notes..." class="w-full px-5 py-4 bg-white/90 border-2 border-cyan-100 rounded-xl focus:border-cyan-500 focus:outline-none text-gray-800 shadow-sm" />
+                </div>
+                <button id="chat-search-btn" type="button" class="lg:mt-7 bg-cyan-600 hover:bg-cyan-700 text-white font-bold px-8 py-4 rounded-xl shadow-md">
+                    Search
+                </button>
+            </div>
+            <div id="chatbot-response" class="mt-4 text-gray-600 text-sm">Start typing to search your library resources.</div>
+            <div id="results-container" class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5"></div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Library Statistics -->
+    <div class="grid grid-cols-1 md:grid-cols-2 {% if role == 'guest' %}lg:grid-cols-3{% else %}lg:grid-cols-4{% endif %} gap-6 mb-12">
+        {% if role != 'guest' %}
+            <a href="{{ url_for('student_master') if role == 'admin' else '#' }}" class="stat-card bg-gradient-to-br from-purple-100 to-purple-200 rounded-xl shadow-lg p-6 border-l-4 border-purple-600 hover-lift transition-all cursor-pointer">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="text-4xl">👥</div>
+                    <div class="w-12 h-12 bg-purple-600 bg-opacity-20 rounded-full flex items-center justify-center">
+                        <span class="text-sm font-bold text-purple-600">📊</span>
+                    </div>
+                </div>
+                <p class="text-purple-700 text-sm font-semibold uppercase tracking-wide mb-1">Total Students</p>
+                <p class="stat-value text-purple-700">{{ students }}</p>
+            </a>
+
+            <a href="{{ url_for('program_master') if role == 'admin' else '#' }}" class="stat-card bg-gradient-to-br from-pink-100 to-pink-200 rounded-xl shadow-lg p-6 border-l-4 border-pink-600 hover-lift transition-all cursor-pointer">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="text-4xl">🎓</div>
+                    <div class="w-12 h-12 bg-pink-600 bg-opacity-20 rounded-full flex items-center justify-center">
+                        <span class="text-sm font-bold text-pink-600">📊</span>
+                    </div>
+                </div>
+                <p class="text-pink-700 text-sm font-semibold uppercase tracking-wide mb-1">Programs</p>
+                <p class="stat-value text-pink-700">{{ programs }}</p>
+            </a>
+
+            <a href="{{ url_for('book_master') }}" class="stat-card bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl shadow-lg p-6 border-l-4 border-blue-600 hover-lift transition-all cursor-pointer">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="text-4xl">📚</div>
+                    <div class="w-12 h-12 bg-blue-600 bg-opacity-20 rounded-full flex items-center justify-center">
+                        <span class="text-sm font-bold text-blue-600">📊</span>
+                    </div>
+                </div>
+                <p class="text-blue-700 text-sm font-semibold uppercase tracking-wide mb-1">Total Books</p>
+                <p class="stat-value text-blue-700">{{ books }}</p>
+            </a>
+
+            <a href="{{ url_for('issue_book') }}" class="stat-card bg-gradient-to-br from-cyan-100 to-cyan-200 rounded-xl shadow-lg p-6 border-l-4 border-cyan-600 hover-lift transition-all cursor-pointer">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="text-4xl">📤</div>
+                    <div class="w-12 h-12 bg-cyan-600 bg-opacity-20 rounded-full flex items-center justify-center">
+                        <span class="text-sm font-bold text-cyan-600">📊</span>
+                    </div>
+                </div>
+                <p class="text-cyan-700 text-sm font-semibold uppercase tracking-wide mb-1">Issues</p>
+                <p class="stat-value text-cyan-700">{{ issued_books }}</p>
+            </a>
+
+            {% if role == 'user' %}
+                <a href="{{ url_for('manage_location') }}" class="stat-card bg-gradient-to-br from-orange-100 to-orange-200 rounded-xl shadow-lg p-6 border-l-4 border-orange-600 hover-lift transition-all cursor-pointer">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="text-4xl">📍</div>
+                        <div class="w-12 h-12 bg-orange-600 bg-opacity-20 rounded-full flex items-center justify-center">
+                            <span class="text-sm font-bold text-orange-600">👁</span>
+                        </div>
+                    </div>
+                    <p class="text-orange-700 text-sm font-semibold uppercase tracking-wide mb-1">Locations</p>
+                    <p class="stat-value text-orange-700">{{ locations }}</p>
+                </a>
+            {% endif %}
+
+            {% if role == 'admin' %}
+                <a href="{{ url_for('manage_location') }}" class="stat-card bg-gradient-to-br from-orange-100 to-orange-200 rounded-xl shadow-lg p-6 border-l-4 border-orange-600 hover-lift transition-all cursor-pointer">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="text-4xl">📍</div>
+                        <div class="w-12 h-12 bg-orange-600 bg-opacity-20 rounded-full flex items-center justify-center">
+                            <span class="text-sm font-bold text-orange-600">📊</span>
+                        </div>
+                    </div>
+                    <p class="text-orange-700 text-sm font-semibold uppercase tracking-wide mb-1">Locations</p>
+                    <p class="stat-value text-orange-700">{{ locations }}</p>
+                </a>
+
+                <a href="{{ url_for('manage_library_card') }}" class="stat-card bg-gradient-to-br from-green-100 to-green-200 rounded-xl shadow-lg p-6 border-l-4 border-green-600 hover-lift transition-all cursor-pointer">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="text-4xl">🎫</div>
+                        <div class="w-12 h-12 bg-green-600 bg-opacity-20 rounded-full flex items-center justify-center">
+                            <span class="text-sm font-bold text-green-600">📊</span>
+                        </div>
+                    </div>
+                    <p class="text-green-700 text-sm font-semibold uppercase tracking-wide mb-1">Library Cards</p>
+                    <p class="stat-value text-green-700">{{ cards }}</p>
+                </a>
+
+                <a href="{{ url_for('transaction_report') }}" class="stat-card bg-gradient-to-br from-teal-100 to-teal-200 rounded-xl shadow-lg p-6 border-l-4 border-teal-600 hover-lift transition-all cursor-pointer">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="text-4xl">📊</div>
+                        <div class="w-12 h-12 bg-teal-600 bg-opacity-20 rounded-full flex items-center justify-center">
+                            <span class="text-sm font-bold text-teal-600">📊</span>
+                        </div>
+                    </div>
+                    <p class="text-teal-700 text-sm font-semibold uppercase tracking-wide mb-1">Transactions</p>
+                    <p class="stat-value text-teal-700">{{ transactions }}</p>
+                </a>
+            {% endif %}
+        {% else %}
+            <!-- Guest View Statistics -->
+            <div class="stat-card bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl shadow-lg p-6 border-l-4 border-blue-600">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="text-4xl">📚</div>
+                    <div class="w-12 h-12 bg-blue-600 bg-opacity-20 rounded-full flex items-center justify-center">
+                        <span class="text-sm font-bold text-blue-600">✨</span>
+                    </div>
+                </div>
+                <p class="text-blue-700 text-sm font-semibold uppercase tracking-wide mb-1">Available Books</p>
+                <p class="stat-value text-blue-700">{{ books }}</p>
+                <p class="text-blue-600 text-xs mt-2">Ready to explore</p>
+            </div>
+
+            <div class="stat-card bg-gradient-to-br from-green-100 to-green-200 rounded-xl shadow-lg p-6 border-l-4 border-green-600">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="text-4xl">🎓</div>
+                </div>
+                <p class="text-green-700 text-sm font-semibold uppercase tracking-wide mb-1">Active Programs</p>
+                <p class="stat-value text-green-700">4</p>
+                <p class="text-green-600 text-xs mt-2">CSE, IT, ECE, BCA</p>
+            </div>
+
+            <div class="stat-card bg-gradient-to-br from-purple-100 to-purple-200 rounded-xl shadow-lg p-6 border-l-4 border-purple-600">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="text-4xl">👥</div>
+                </div>
+                <p class="text-purple-700 text-sm font-semibold uppercase tracking-wide mb-1">Students</p>
+                <p class="stat-value text-purple-700">{{ students }}</p>
+                <p class="text-purple-600 text-xs mt-2">Active members</p>
+            </div>
+
+        {% endif %}
+    </div>
+</div>
+
+<!-- Library Features Section -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+    <!-- Library About -->
+    <div class="lg:col-span-2 glass-panel rounded-2xl p-8 border-l-4 border-cyan-500">
+        <h3 class="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+            📖 About Our Library
+        </h3>
+        <p class="text-gray-700 leading-relaxed mb-4">
+            DEC Smart Scholar Hub is a state-of-the-art digital library system designed to support academic excellence. 
+            Our comprehensive collection spans multiple disciplines, offering students, faculty, and researchers access to a vast array of resources.
+        </p>
+        <div class="feature-grid">
+            <div class="feature-item">
+                <div class="emoji">📚</div>
+                <p class="text-sm font-semibold text-gray-700">Diverse Collection</p>
+            </div>
+            <div class="feature-item">
+                <div class="emoji">🔍</div>
+                <p class="text-sm font-semibold text-gray-700">Advanced Search</p>
+            </div>
+            <div class="feature-item">
+                <div class="emoji">📢</div>
+                <p class="text-sm font-semibold text-gray-700">Show Notices</p>
+            </div>
+            <div class="feature-item">
+                <div class="emoji">🔐</div>
+                <p class="text-sm font-semibold text-gray-700">Secure Access</p>
+            </div>
+            <div class="feature-item">
+                <div class="emoji">🎓</div>
+                <p class="text-sm font-semibold text-gray-700">College Friendly</p>
+            </div>
+            <div class="feature-item">
+                <div class="emoji">📄</div>
+                <p class="text-sm font-semibold text-gray-700">Digital PDFs</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Library Stats Info -->
+    <div class="highlight-panel rounded-2xl shadow-xl p-8 text-white">
+        <h3 class="text-2xl font-bold mb-6">📊 Library Highlights</h3>
+        <div class="space-y-4">
+            <div class="bg-white bg-opacity-20 rounded-lg p-4 backdrop-blur">
+                <p class="text-sm font-semibold text-amber-100 mb-1">Founded</p>
+                <p class="text-2xl font-bold">May 2026</p>
+            </div>
+            <div class="bg-white bg-opacity-20 rounded-lg p-4 backdrop-blur">
+                <p class="text-sm font-semibold text-amber-100 mb-1">Total Resources</p>
+                <p class="text-2xl font-bold">{{ books }}+ Books</p>
+            </div>
+            <div class="bg-white bg-opacity-20 rounded-lg p-4 backdrop-blur">
+                <p class="text-sm font-semibold text-amber-100 mb-1">Active Users</p>
+                <p class="text-2xl font-bold">{{ students }}+ Students</p>
+            </div>
+            <div class="bg-white bg-opacity-20 rounded-lg p-4 backdrop-blur">
+                <p class="text-sm font-semibold text-amber-100 mb-1">Departments</p>
+                <p class="text-2xl font-bold">{{ programs }} Programs</p>
+                {% if department_names %}
+                    <p class="text-sm text-white/80 mt-1">{{ department_names }}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Library Desk Section -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+    <div class="library-motion glass-panel rounded-2xl p-8 lg:col-span-2">
+        <div class="motion-content">
+            <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-6 mb-8">
+                <div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Smart Library Desk</h3>
+                    <p class="text-gray-600 max-w-2xl">A calm academic space for books, notices, departments, and student activity in one place.</p>
+                </div>
+                <a href="{{ url_for('notices') }}" class="inline-flex items-center justify-center bg-cyan-600 hover:bg-cyan-700 text-white font-semibold px-5 py-3 rounded-lg shadow-md">
+                    View Notices
+                </a>
+            </div>
+
+            <div class="shelf-row mb-6">
+                <div class="book-bar h-16 bg-cyan-500"></div>
+                <div class="book-bar h-24 bg-amber-500"></div>
+                <div class="book-bar h-20 bg-blue-600"></div>
+                <div class="book-bar h-14 bg-teal-500"></div>
+                <div class="book-bar h-24 bg-purple-500"></div>
+                <div class="book-bar h-20 bg-orange-500"></div>
+                <div class="book-bar h-24 bg-sky-500"></div>
+                <div class="book-bar h-16 bg-emerald-500"></div>
+                <div class="book-bar h-20 bg-indigo-500"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-white/70 rounded-xl p-4 border border-white/70">
+                    <p class="text-sm font-semibold text-gray-500 uppercase tracking-wide">Books Ready</p>
+                    <p class="text-2xl font-bold text-cyan-700">{{ books }}</p>
+                </div>
+                <div class="bg-white/70 rounded-xl p-4 border border-white/70">
+                    <p class="text-sm font-semibold text-gray-500 uppercase tracking-wide">Active Notices</p>
+                    <p class="text-2xl font-bold text-amber-700">{{ notices_count }}</p>
+                </div>
+                <div class="bg-white/70 rounded-xl p-4 border border-white/70">
+                    <p class="text-sm font-semibold text-gray-500 uppercase tracking-wide">Student Access</p>
+                    <p class="text-2xl font-bold text-blue-700">{{ students }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="glass-panel rounded-2xl p-8">
+        <h3 class="text-2xl font-bold text-gray-900 mb-5">Latest Notice</h3>
+        {% if recent_notices %}
+            {% set notice = recent_notices[0] %}
+            <div class="bg-white/75 rounded-xl p-5 border border-white/80 mb-5">
+                <p class="text-xs font-semibold text-cyan-700 uppercase tracking-wide mb-2">{{ notice.department or 'College' }}</p>
+                <h4 class="text-lg font-bold text-gray-900 mb-2">{{ notice.title }}</h4>
+                <p class="text-sm text-gray-600 line-clamp-3">{{ notice.content }}</p>
+                <p class="text-xs text-gray-500 mt-4">{{ notice.created_date }}</p>
+            </div>
+        {% else %}
+            <div class="bg-white/75 rounded-xl p-5 border border-white/80 mb-5">
+                <h4 class="text-lg font-bold text-gray-900 mb-2">No notice posted yet</h4>
+                <p class="text-sm text-gray-600">College updates will appear here when available.</p>
+            </div>
+        {% endif %}
+        <a href="{{ url_for('notices') }}" class="inline-flex items-center justify-center w-full bg-white/80 hover:bg-white text-cyan-700 font-bold px-5 py-3 rounded-lg border border-cyan-100">
+            Open Notice Board
+        </a>
+    </div>
+</div>
+
+<!-- Bottom Call-to-Action for Guests -->
+{% if role == 'guest' %}
+<div class="action-panel rounded-2xl shadow-xl p-8 text-white">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+        <div class="lg:col-span-2">
+            <p class="text-cyan-100 text-sm font-semibold uppercase tracking-wide mb-2">DEC Smart Scholar Hub</p>
+            <h3 class="text-3xl font-bold mb-3">Access your college library workspace</h3>
+            <p class="text-lg text-white/85">Sign in to manage books, check notices, view syllabus updates, and follow academic resources from one clean dashboard.</p>
+        </div>
+        <div class="glass-panel rounded-xl p-5">
+            <div class="flex flex-col gap-3">
+                <a href="{{ url_for('login') }}" class="bg-white text-cyan-700 font-bold py-3 px-6 rounded-lg hover:bg-cyan-50 text-center">
+                    Sign In
+                </a>
+                <a href="{{ url_for('register') }}" class="bg-cyan-700/80 hover:bg-cyan-700 text-white font-bold py-3 px-6 rounded-lg text-center border border-white/20">
+                    Create Account
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endif %}
+
+<script>
+    // Animate stat cards on load
+    const statCards = document.querySelectorAll('.stat-card');
+    statCards.forEach((card, index) => {
+        setTimeout(() => {
+            card.style.opacity = '1';
+        }, (index * 100) + 100);
+    });
+
+    const searchInput = document.getElementById('chat-query');
+    const searchButton = document.getElementById('chat-search-btn');
+    const responseBox = document.getElementById('chatbot-response');
+    const resultsContainer = document.getElementById('results-container');
+
+    function runLibrarySearch() {
+        if (!searchInput || !responseBox || !resultsContainer) return;
+        const query = searchInput.value.trim();
+        if (!query) {
+            responseBox.textContent = 'Please enter a search term.';
+            resultsContainer.innerHTML = '';
+            return;
+        }
+
+        responseBox.textContent = 'Searching...';
+        fetch('/chatbot?q=' + encodeURIComponent(query))
+            .then(response => response.json())
+            .then(data => {
+                responseBox.textContent = data.message;
+                if (!data.results || !data.results.length) {
+                    resultsContainer.innerHTML = '<div class="bg-white rounded-xl p-5 text-gray-500">No results found.</div>';
+                    return;
+                }
+
+                resultsContainer.innerHTML = data.results.map(result => `
+                    <div class="search-result-card bg-white rounded-xl p-5 shadow-sm">
+                        <div class="flex items-center justify-between gap-3 mb-2">
+                            <h4 class="font-bold text-gray-900">${result.title}</h4>
+                            <span class="text-xs font-semibold text-cyan-700 bg-cyan-50 px-2 py-1 rounded">${result.type}</span>
+                        </div>
+                        <p class="text-sm text-gray-600">${result.detail || ''}</p>
+                    </div>
+                `).join('');
+            });
+    }
+
+    if (searchButton) {
+        searchButton.addEventListener('click', runLibrarySearch);
+    }
+
+    if (searchInput) {
+        searchInput.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                runLibrarySearch();
+            }
+        });
+    }
+</script>
+{% endblock %}
