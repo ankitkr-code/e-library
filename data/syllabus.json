@@ -7,9 +7,9 @@
     },
     {
         "id": 2,
-        "department": "IT",
+        "department": "ELECTRICAL",
         "semester": "1",
-        "file": "syllabus/IT_Sem1.pdf"
+        "file": "syllabus/ELECTRICAL_Sem1.pdf"
     },
     {
         "id": 3,
@@ -19,6 +19,18 @@
     },
     {
         "id": 4,
+        "department": "CIVIL",
+        "semester": "1",
+        "file": "syllabus/CIVIL_Sem1.pdf"
+    },
+    {
+        "id": 5,
+        "department": "MECHANICAL",
+        "semester": "1",
+        "file": "syllabus/MECHANICAL_Sem1.pdf"
+    },
+    {
+        "id": 6,
         "department": "BCA",
         "semester": "1",
         "file": "syllabus/BCA_Sem1.pdf"

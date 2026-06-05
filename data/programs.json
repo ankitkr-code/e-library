@@ -13,12 +13,24 @@
     },
     {
         "id": 3,
-        "name": "B.Tech in Information Technology",
-        "department": "IT",
-        "incharge": "Neha"
+        "name": "B.Tech in Civil Engineering",
+        "department": "CIVIL",
+        "incharge": "Rajesh"
     },
     {
         "id": 4,
+        "name": "B.Tech in Mechanical Engineering",
+        "department": "MECHANICAL",
+        "incharge": "Vikram"
+    },
+    {
+        "id": 5,
+        "name": "B.Tech in Electrical Engineering",
+        "department": "ELECTRICAL",
+        "incharge": "Anita"
+    },
+    {
+        "id": 6,
         "name": "BCA - Bachelor of Computer Applications",
         "department": "BCA",
         "incharge": "Sharma"

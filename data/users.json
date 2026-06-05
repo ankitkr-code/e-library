@@ -7,8 +7,16 @@
         "password": "cse123",
         "role": "admin"
     },
-    "it_head": {
-        "password": "it123",
+    "civil_head": {
+        "password": "civil123",
+        "role": "admin"
+    },
+    "mechanical_head": {
+        "password": "mechanical123",
+        "role": "admin"
+    },
+    "electrical_head": {
+        "password": "electrical123",
         "role": "admin"
     },
     "ec_head": {
@@ -33,6 +41,10 @@
     },
     "Antu003": {
         "password": "Antu@2003",
+        "role": "user"
+    },
+    "shailjaEC": {
+        "password": "Shailja@123",
         "role": "user"
     }
 }

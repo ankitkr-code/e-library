@@ -373,7 +373,9 @@
     <div class="grid grid-cols-1 xl:grid-cols-12 gap-8 min-h-[inherit] items-stretch">
         <div class="entry-card rounded-2xl p-8 md:p-10 xl:col-span-5 flex flex-col justify-center">
             <div>
-                <div class="entry-mark rounded-2xl flex items-center justify-center text-4xl mb-7">📚</div>
+                <div class="entry-mark rounded-3xl flex items-center justify-center text-4xl mb-7 overflow-hidden">
+                    <img src="{{ url_for('static', filename='dec_logo/WhatsApp Image 2026-06-04 at 20.44.33.png') }}" alt="DEC Logo" class="w-24 h-24 object-contain">
+                </div>
                 <p class="text-cyan-700 text-sm font-bold uppercase tracking-wide mb-3">Library Access Portal</p>
                 <h2 class="text-4xl md:text-5xl font-bold text-gray-900 leading-tight mb-5">DEC Smart Scholar Hub</h2>
                 <p class="text-lg text-gray-600 leading-relaxed">
@@ -471,7 +473,9 @@
                 <h2 class="text-4xl font-bold text-gray-900 mb-2">Welcome to DEC Smart Scholar Hub 👋</h2>
                 <p class="text-lg text-gray-600">Your gateway to knowledge and academic excellence</p>
             </div>
-            <div class="text-6xl book-icon">📚</div>
+            <div class="w-24 h-24 rounded-3xl overflow-hidden">
+                <img src="{{ url_for('static', filename='dec_logo/WhatsApp Image 2026-06-04 at 20.44.33.png') }}" alt="DEC Logo" class="w-full h-full object-contain">
+            </div>
         </div>
 
         {% if role != 'guest' %}

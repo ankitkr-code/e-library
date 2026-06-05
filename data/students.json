@@ -17,7 +17,7 @@
     {
         "id": 3,
         "name": "Neha Kumari",
-        "program": "IT",
+        "program": "ELECTRICAL",
         "email": "nehakumari@example.com",
         "registration_no": "22040440003",
         "username": "Neha"
@@ -28,5 +28,12 @@
         "program": "CSE",
         "email": "ankit@example.com",
         "username": "Akki"
+    },
+    {
+        "id": 5,
+        "name": "Shailja Prashad",
+        "program": "ECE",
+        "email": "shailjaprashad01@gmail.com",
+        "registration_no": "22040460014"
     }
 ]

@@ -91,6 +91,17 @@
             width: 100%;
         }
 
+        .sidebar a.active {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+            border-radius: 0.5rem;
+        }
+
+        .sidebar a.active::before {
+            width: 100%;
+            background: #f59e0b;
+        }
+
         /* Cards */
         .card {
             background: #ffffff;
@@ -262,8 +273,8 @@
     <div class="sidebar w-64 min-h-screen p-6 animate-slide-in">
         <div class="mb-8">
             <div class="flex items-center gap-3 mb-2">
-                <div class="w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-lg flex items-center justify-center text-white font-bold text-xl shadow-lg">
-                    🎓
+                <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-lg">
+                    <img src="{{ url_for('static', filename='dec_logo/WhatsApp Image 2026-06-04 at 20.44.33.png') }}" alt="DEC Logo" class="w-10 h-10 object-contain">
                 </div>
                 <div>
                     <h2 class="text-lg font-bold text-white m-0">DEC Scholar</h2>
@@ -273,33 +284,33 @@
         </div>
 
         <nav class="space-y-2">
-            <a href="{{ url_for('dashboard') }}" class="block px-4 py-3 rounded-lg font-medium">📊 Dashboard</a>
+            <a href="{{ url_for('dashboard') }}" class="block px-4 py-3 rounded-lg font-medium {% if request.endpoint == 'dashboard' %}active{% endif %}">📊 Dashboard</a>
             {% if session.get('role') == 'admin' %}
                 <div class="text-cyan-200 text-xs font-bold mt-6 mb-3 px-4">ADMIN PANEL</div>
-                <a href="{{ url_for('student_master') }}" class="block px-4 py-3 rounded-lg font-medium">👥 Student's Master</a>
-                <a href="{{ url_for('program_master') }}" class="block px-4 py-3 rounded-lg font-medium">🎓 Program Master</a>
-                <a href="{{ url_for('book_master') }}" class="block px-4 py-3 rounded-lg font-medium">📖 Book Master</a>
-                <a href="{{ url_for('manage_location') }}" class="block px-4 py-3 rounded-lg font-medium">📍 Manage Location</a>
-                <a href="{{ url_for('manage_library_card') }}" class="block px-4 py-3 rounded-lg font-medium">🎫 Library Cards</a>
-                <a href="{{ url_for('issue_book') }}" class="block px-4 py-3 rounded-lg font-medium">📤 Issue Book</a>
-                <a href="{{ url_for('return_book') }}" class="block px-4 py-3 rounded-lg font-medium">📥 Return Book</a>
-                <a href="{{ url_for('transaction_report') }}" class="block px-4 py-3 rounded-lg font-medium">📊 Transactions</a>
-                <a href="{{ url_for('upload_book') }}" class="block px-4 py-3 rounded-lg font-medium">⬆️ Upload Book</a>
-                <a href="{{ url_for('admin_management') }}" class="block px-4 py-3 rounded-lg font-medium">⚙️ Admin Management</a>
-                <a href="{{ url_for('approve_registrations_page') }}" class="block px-4 py-3 rounded-lg font-medium">✓ Approve Students</a>
+                <a href="{{ url_for('student_master') }}" class="block px-4 py-3 rounded-lg font-medium {% if request.endpoint == 'student_master' %}active{% endif %}">👥 Student's Master</a>
+                <a href="{{ url_for('program_master') }}" class="block px-4 py-3 rounded-lg font-medium {% if request.endpoint == 'program_master' %}active{% endif %}">🎓 Program Master</a>
+                <a href="{{ url_for('book_master') }}" class="block px-4 py-3 rounded-lg font-medium {% if request.endpoint == 'book_master' %}active{% endif %}">📖 Book Master</a>
+                <a href="{{ url_for('manage_location') }}" class="block px-4 py-3 rounded-lg font-medium {% if request.endpoint == 'manage_location' %}active{% endif %}">📍 Manage Location</a>
+                <a href="{{ url_for('manage_library_card') }}" class="block px-4 py-3 rounded-lg font-medium {% if request.endpoint == 'manage_library_card' %}active{% endif %}">🎫 Library Cards</a>
+                <a href="{{ url_for('issue_book') }}" class="block px-4 py-3 rounded-lg font-medium {% if request.endpoint == 'issue_book' %}active{% endif %}">📤 Issue Book</a>
+                <a href="{{ url_for('return_book') }}" class="block px-4 py-3 rounded-lg font-medium {% if request.endpoint == 'return_book' %}active{% endif %}">📥 Return Book</a>
+                <a href="{{ url_for('transaction_report') }}" class="block px-4 py-3 rounded-lg font-medium {% if request.endpoint == 'transaction_report' %}active{% endif %}">📊 Transactions</a>
+                <a href="{{ url_for('upload_book') }}" class="block px-4 py-3 rounded-lg font-medium {% if request.endpoint == 'upload_book' %}active{% endif %}">⬆️ Upload Book</a>
+                <a href="{{ url_for('admin_management') }}" class="block px-4 py-3 rounded-lg font-medium {% if request.endpoint == 'admin_management' %}active{% endif %}">⚙️ Admin Management</a>
+                <a href="{{ url_for('approve_registrations_page') }}" class="block px-4 py-3 rounded-lg font-medium {% if request.endpoint == 'approve_registrations_page' %}active{% endif %}">✓ Approve Students</a>
                 <div class="text-cyan-200 text-xs font-bold mt-6 mb-3 px-4">ACADEMIC MANAGEMENT</div>
-                <a href="{{ url_for('notices') }}" class="block px-4 py-3 rounded-lg font-medium">📢 Notices</a>
-                <a href="{{ url_for('class_notes_view') }}" class="block px-4 py-3 rounded-lg font-medium">📚 Class Notes</a>
-                <a href="{{ url_for('academic_tasks_view') }}" class="block px-4 py-3 rounded-lg font-medium">📋 Assignments & Quiz</a>
+                <a href="{{ url_for('notices') }}" class="block px-4 py-3 rounded-lg font-medium {% if request.endpoint == 'notices' %}active{% endif %}">📢 Notices</a>
+                <a href="{{ url_for('class_notes_view') }}" class="block px-4 py-3 rounded-lg font-medium {% if request.endpoint == 'class_notes_view' %}active{% endif %}">📚 Class Notes</a>
+                <a href="{{ url_for('academic_tasks_view') }}" class="block px-4 py-3 rounded-lg font-medium {% if request.endpoint == 'academic_tasks_view' %}active{% endif %}">📋 Assignments & Quiz</a>
             {% endif %}
             <div class="text-cyan-200 text-xs font-bold mt-6 mb-3 px-4">USER</div>
-            <a href="{{ url_for('book_master') }}" class="block px-4 py-3 rounded-lg font-medium">📚 Books</a>
-            <a href="{{ url_for('manage_location') }}" class="block px-4 py-3 rounded-lg font-medium">📍 Locations</a>
-            <a href="{{ url_for('syllabus') }}" class="block px-4 py-3 rounded-lg font-medium">📋 Syllabus</a>
-            <a href="{{ url_for('notices') }}" class="block px-4 py-3 rounded-lg font-medium">📢 Notices</a>
-            <a href="{{ url_for('class_notes_view') }}" class="block px-4 py-3 rounded-lg font-medium">📚 Class Notes</a>
-            <a href="{{ url_for('academic_tasks_view') }}" class="block px-4 py-3 rounded-lg font-medium">📋 Assignments & Quiz</a>
-            <a href="{{ url_for('change_password') }}" class="block px-4 py-3 rounded-lg font-medium">🔐 Change Password</a>
+            <a href="{{ url_for('book_master') }}" class="block px-4 py-3 rounded-lg font-medium {% if request.endpoint == 'book_master' %}active{% endif %}">📚 Books</a>
+            <a href="{{ url_for('manage_location') }}" class="block px-4 py-3 rounded-lg font-medium {% if request.endpoint == 'manage_location' %}active{% endif %}">📍 Locations</a>
+            <a href="{{ url_for('syllabus') }}" class="block px-4 py-3 rounded-lg font-medium {% if request.endpoint == 'syllabus' %}active{% endif %}">📋 Syllabus</a>
+            <a href="{{ url_for('notices') }}" class="block px-4 py-3 rounded-lg font-medium {% if request.endpoint == 'notices' %}active{% endif %}">📢 Notices</a>
+            <a href="{{ url_for('class_notes_view') }}" class="block px-4 py-3 rounded-lg font-medium {% if request.endpoint == 'class_notes_view' %}active{% endif %}">📚 Class Notes</a>
+            <a href="{{ url_for('academic_tasks_view') }}" class="block px-4 py-3 rounded-lg font-medium {% if request.endpoint == 'academic_tasks_view' %}active{% endif %}">📋 Assignments & Quiz</a>
+            <a href="{{ url_for('change_password') }}" class="block px-4 py-3 rounded-lg font-medium {% if request.endpoint == 'change_password' %}active{% endif %}">🔐 Change Password</a>
             <div class="border-t border-blue-500 mt-6 pt-4">
                 <a href="{{ url_for('logout') }}" class="block px-4 py-3 rounded-lg font-medium text-red-300 hover:bg-red-500/20">🚪 Logout</a>
             </div>
