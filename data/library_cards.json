@@ -6,12 +6,6 @@
         "status": "Active"
     },
     {
-        "id": 2,
-        "student": "Priya Singh",
-        "card_number": "LC1002",
-        "status": "Active"
-    },
-    {
         "id": 3,
         "student": "Jyoti Kumari",
         "card_number": "LC1003",
