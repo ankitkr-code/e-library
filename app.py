@@ -559,6 +559,7 @@ def student_master():
             'id': next_id,
             'name': request.form.get('name', '').strip(),
             'program': request.form.get('program', '').strip(),
+            'registration_no': request.form.get('registration_no', '').strip(),
             'email': request.form.get('email', '').strip(),
         })
         save_students()

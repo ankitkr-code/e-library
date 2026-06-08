@@ -1,5 +1,4 @@
 [
-    
     {
         "id": 2,
         "student": "Jyoti Kumari",
@@ -50,31 +49,10 @@
         "date": "2026-05-13"
     },
     {
-        "id": 8,
-        "student": "Antu",
-        "book": "Linear Algebra",
-        "type": "Issue",
-        "date": "2026-05-19"
-    },
-    {
         "id": 9,
         "student": "jyoti",
         "book": "Calculus Made Easy",
         "type": "Issue",
         "date": "2026-05-17"
-    },
-    {
-        "id": 10,
-        "student": "Antu003",
-        "book": "DSA in Java",
-        "type": "Issue",
-        "date": "2026-05-14"
-    },
-    {
-        "id": 11,
-        "student": "Antu003",
-        "book": "DSA in Java",
-        "type": "Return",
-        "date": "2026-05-19"
     }
 ]

@@ -4,7 +4,9 @@
         "name": "Jyoti Kumari",
         "program": "ECE",
         "email": "jyotirana@example.com",
+        "registration_no": "22040460004",
         "username": "jyoti"
+        
     },
     {
         "id": 2,
@@ -19,7 +21,7 @@
         "name": "Neha Kumari",
         "program": "ELECTRICAL",
         "email": "nehakumari@example.com",
-        "registration_no": "22040440003",
+        "registration_no": "22040430003",
         "username": "Neha"
     },
     {
@@ -27,6 +29,7 @@
         "name": "Ankit Kumar",
         "program": "CSE",
         "email": "ankit@example.com",
+        "registration_no": "22040440012",
         "username": "Akki"
     },
     {
@@ -34,6 +37,7 @@
         "name": "Shailja Prashad",
         "program": "ECE",
         "email": "shailjaprashad01@gmail.com",
-        "registration_no": "22040460014"
+        "registration_no": "22040460014",
+        "username": "shailjaEC"
     }
 ]
